@@ -1,19 +1,32 @@
 # Game Recharge Price Comparison API
 
-A Flask-based backend that scrapes diamond/UC prices from multiple gaming recharge sites and returns them as JSON.
+This is a Flask-based API that scrapes game recharge prices (diamonds, UC) from Codashop and SEAGM.
 
-## Deployment Steps
-1. Fork or download this repository.
-2. Create a new GitHub repo and push this code.
-3. Go to [Render](https://render.com), create a new **Web Service**.
-4. Connect to your GitHub repo.
-5. Set `Build Command` to: pip install -r requirements.txt
-6. Set `Start Command` to: gunicorn app:app
-7. 7. Deploy.
-8. Use the API in Blogger via JavaScript AJAX.
+## Deploying on Render
+1. Push this repo to GitHub.
+2. On Render.com:
+   - Create **New Web Service**
+   - Connect to GitHub repo
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `gunicorn app:app`
+3. Deploy!
 
-## Example API Endpoints
-- `/prices?game=mobile_legends`
-- `/prices?game=free_fire`
-- `/prices?game=pubg`
-- `/all`
+## API Endpoints
+- `GET /prices?game=mobile_legends`
+- `GET /prices?game=free_fire`
+- `GET /prices?game=pubg_mobile`
+- `GET /all`
+
+## Usage in Blogger
+```html
+<div id="price-data"></div>
+<script>
+  fetch("https://YOUR-RENDER-URL/prices?game=free_fire")
+    .then(r => r.json())
+    .then(data => {
+      let html = "<ul>";
+      data.forEach(item => html += `<li>${item.amount} — ${item.price} (${item.vendor})</li>`);
+      html += "</ul>";
+      document.getElementById("price-data").innerHTML = html;
+    });
+</script>
