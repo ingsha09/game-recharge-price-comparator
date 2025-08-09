@@ -5,13 +5,18 @@ HEADERS = {
 }
 
 def scrape_mobile_legends_codashop():
-    """
-    Fetch Mobile Legends diamonds from Codashop public API.
-    """
-    url = "https://www.codashop.com/api/product/MOBILE_LEGENDS"  # Codashop API for ML
+    url = "https://www.codashop.com/api/product/MOBILE_LEGENDS"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "Referer": "https://www.codashop.com/en-us/mobile-legends",
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+        "X-Requested-With": "XMLHttpRequest"
+    }
     try:
-        res = requests.get(url, headers=HEADERS, timeout=10)
-        res.raise_for_status()
+        res = requests.get(url, headers=headers, timeout=10)
+        if res.status_code != 200:
+            print(f"Codashop returned status {res.status_code}")
+            return []
         data = res.json()
         results = []
         for item in data.get("data", {}).get("items", []):
